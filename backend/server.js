@@ -1,9 +1,8 @@
 import express from "express";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
 import colors from "colors";
 
-import connect from "./config/db.js";
+import connect from "./utils/db_connect.js";
 
 import UserRoutes from "./routes/UserRoutes.js";
 
