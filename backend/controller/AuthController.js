@@ -1,5 +1,7 @@
 import User from "../model/User.js";
 
+import { generateToken } from "../utils/generateToken.js";
+
 export const login = async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -25,5 +27,6 @@ export const login = async (req, res, next) => {
         fname: user.fname,
         lname: user.lname,
         email: user.email,
+        token: generateToken(user._id),
     });
 };
