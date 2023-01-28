@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import colors from "colors";
+import colors from "colors"; // this isn't called directly so Editor thinks it's not used.
 
 import connect from "./utils/db_connect.js";
 
