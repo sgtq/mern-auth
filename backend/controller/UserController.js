@@ -5,10 +5,10 @@ export const getAll = async (req, res) => {
 };
 
 export const register = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { fname, lname, email, password } = req.body;
 
-    if (!name || !email || !password) {
-        return res.status(400).json({ message: "missing data." });
+    if (!fname || !lname || !email || !password) {
+        return res.status(400).json({ message: "missing required data." });
     }
 
     try {
@@ -21,7 +21,7 @@ export const register = async (req, res) => {
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Error finding existing User." });
+        res.status(500).json({ message: "Error finding User." });
     }
 
     try {

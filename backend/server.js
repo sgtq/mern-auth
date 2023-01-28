@@ -5,6 +5,7 @@ import colors from "colors";
 import connect from "./utils/db_connect.js";
 
 import UserRoutes from "./routes/UserRoutes.js";
+import AuthRoutes from "./routes/AuthRoutes.js";
 
 const app = express();
 
@@ -14,6 +15,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 // Routes
+app.use("/api/auth", AuthRoutes);
 app.use("/api/users", UserRoutes);
 
 // Middleware
