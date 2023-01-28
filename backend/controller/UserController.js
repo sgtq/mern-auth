@@ -4,6 +4,30 @@ export const getAll = async (req, res) => {
     //
 };
 
+export const getById = async (req, res) => {
+    const userId = req.user._id;
+
+    let user;
+    try {
+        user = await User.findById(userId, "-password");
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Error getting User.",
+            description: error.message,
+        });
+    }
+
+    if (!user) {
+        return res.status(401).json({
+            error: "User not found.",
+            description: error.message,
+        });
+    }
+
+    res.status(201).json(user);
+};
+
 export const register = async (req, res) => {
     const { fname, lname, email, password } = req.body;
 
