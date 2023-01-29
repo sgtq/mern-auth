@@ -5,7 +5,7 @@ export const getAll = async (req, res) => {
 };
 
 export const getById = async (req, res) => {
-    const userId = req.user._id;
+    const userId = req.id;
 
     let user;
     try {

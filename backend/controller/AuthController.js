@@ -22,11 +22,20 @@ export const login = async (req, res, next) => {
         return res.status(401).json({ message: "invalid credentials." });
     }
 
+    const token = generateToken(user._id);
+
+    res.cookie(String(user._id), token, {
+        path: "/",
+        expires: new Date(Date.now() + 1000 * 60 * 24 * 3), // miliseconds, minute, hours, days (3 days total)
+        httpOnly: true,
+        sameSite: "lax",
+    });
+
     res.status(201).json({
         _id: user._id,
         fname: user.fname,
         lname: user.lname,
         email: user.email,
-        token: generateToken(user._id),
+        token: token,
     });
 };

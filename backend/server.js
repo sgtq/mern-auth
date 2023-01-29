@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import colors from "colors"; // this isn't called directly so Editor thinks it's not used.
 
@@ -13,6 +14,7 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
+app.use(cookieParser());
 
 // Routes
 app.use("/api/auth", AuthRoutes);
