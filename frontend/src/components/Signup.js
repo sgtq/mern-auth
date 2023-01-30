@@ -16,9 +16,7 @@ const Signup = () => {
     };
 
     const handleSubmit = async (e) => {
-		e.preventDefault();
-		
-		const { data } = await axios.
+        e.preventDefault();
     };
 
     return (
