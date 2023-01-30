@@ -1,5 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import dotenv from "dotenv";
 import colors from "colors"; // this isn't called directly so Editor thinks it's not used.
 
@@ -13,6 +14,7 @@ const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 

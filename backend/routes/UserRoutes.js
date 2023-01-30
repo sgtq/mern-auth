@@ -5,6 +5,6 @@ import { verifyToken } from "../middleware/AuthMiddleware.js";
 const router = express.Router();
 
 router.get("/", verifyToken, getById); // verifyToken as middleware
-router.post("/", register);
+router.post("/signup", register);
 
 export default router;

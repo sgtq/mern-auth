@@ -1,9 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { Box, Button, TextField, Typography } from "@mui/material";
 
 const Signup = () => {
+    const navigate = useNavigate();
+
     const [inputs, setInputs] = useState({
-        name: "",
+        fname: "",
+        lname: "",
         email: "",
         password: "",
     });
@@ -15,8 +20,25 @@ const Signup = () => {
         }));
     };
 
-    const handleSubmit = async (e) => {
+    const sendRequest = async () => {
+        const res = await axios
+            .post(`${process.env.REACT_APP_SERVER_URI}/users/signup`, {
+                fname: inputs.fname,
+                lname: inputs.lname,
+                email: inputs.email,
+                password: inputs.password,
+            })
+            .catch((err) => console.log(err));
+
+        const data = await res.data;
+
+        return data;
+    };
+
+    const handleSubmit = (e) => {
         e.preventDefault();
+
+        sendRequest().then(() => navigate("/login"));
     };
 
     return (
@@ -33,11 +55,19 @@ const Signup = () => {
                 >
                     <Typography variant="h2">Sign up</Typography>
                     <TextField
-                        name="name"
-                        value={inputs.name}
+                        name="fname"
+                        value={inputs.fname}
                         margin="normal"
                         variant="outlined"
-                        placeholder="Name"
+                        placeholder="First Name"
+                        onChange={handleInputsChange}
+                    />
+                    <TextField
+                        name="lname"
+                        value={inputs.lname}
+                        margin="normal"
+                        variant="outlined"
+                        placeholder="Last Name"
                         onChange={handleInputsChange}
                     />
                     <TextField
