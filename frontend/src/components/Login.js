@@ -21,6 +21,8 @@ const Login = () => {
     };
 
     const sendRequest = async () => {
+        // TODO: Validation and message for failed login
+
         const res = await axios
             .post(`${process.env.REACT_APP_SERVER_URI}/auth/login`, {
                 email: inputs.email,

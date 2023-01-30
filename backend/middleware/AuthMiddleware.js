@@ -1,7 +1,5 @@
 import jwt from "jsonwebtoken";
 
-import User from "../model/User.js";
-
 export const verifyToken = async (req, res, next) => {
     /* ALTERNATE OPTION USING REGULAR JWT TOKENS */
     /*
@@ -35,18 +33,17 @@ export const verifyToken = async (req, res, next) => {
 
     //////////////////////////////////
     /* USING COOKIES ON SERVER SIDE */
-    const cookie = req.headers.cookie;
-    const token = cookie.split("=")[1];
+    const token = req.cookies.access_token;
 
     if (!token) {
         res.status(400).json({ error: "Not authorized. No token found." });
     }
 
     try {
-        // decode jwt token
-        const decoded = jwt.verify(String(token), process.env.SECRET, (err, user) => {
+        // decode and verify jwt token
+        jwt.verify(String(token), process.env.SECRET, (err, user) => {
             if (err) {
-                return res.status(400).json({ message: "Invalid token." });
+                return res.status(400).json({ error: "Invalid token.", description: err.message });
             }
             req.id = user.id;
         });

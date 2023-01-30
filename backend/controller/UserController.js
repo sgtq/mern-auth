@@ -1,9 +1,5 @@
 import User from "../model/User.js";
 
-export const getAll = async (req, res) => {
-    //
-};
-
 export const getById = async (req, res) => {
     const userId = req.id;
 
@@ -16,12 +12,12 @@ export const getById = async (req, res) => {
             error: "Error getting User.",
             description: error.message,
         });
+        return new Error(error);
     }
 
     if (!user) {
         return res.status(401).json({
             error: "User not found.",
-            description: error.message,
         });
     }
 
