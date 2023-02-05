@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import User from "../model/User.js";
 
 import { generateToken } from "../utils/generateToken.js";
@@ -42,4 +43,22 @@ export const login = async (req, res, next) => {
             email: user.email,
             token: token,
         });
+};
+
+export const logout = (req, res, next) => {
+    const oldToken = req.cookies.access_token;
+    if (!oldToken) {
+        return res.status(401).json({ message: "Token not found" });
+    }
+
+    jwt.verify(String(oldToken), process.env.SECRET, (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(400).json({ message: "Authentication failed." });
+        }
+
+        res.clearCookie("access_token");
+        req.cookies["access_token"] = "";
+        return res.status(200).json({ message: "Logged out" });
+    });
 };

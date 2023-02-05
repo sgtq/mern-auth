@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
@@ -6,6 +7,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 
 function App() {
+    const isLoggedIn = useSelector((state) => state.isLoggedIn);
     return (
         <>
             <header>
@@ -15,7 +17,7 @@ function App() {
                 <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
-                    <Route path="/" element={<Home />} />
+                    {isLoggedIn && <Route path="/" element={<Home />} />}
                 </Routes>
             </main>
         </>

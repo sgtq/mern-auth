@@ -2,9 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { authActions } from "../store";
 
 const Login = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [inputs, setInputs] = useState({
         fname: "",
@@ -38,7 +41,9 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        sendRequest().then(() => navigate("/"));
+        sendRequest()
+            .then(() => dispatch(authActions.login()))
+            .then(() => navigate("/"));
     };
 
     return (
