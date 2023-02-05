@@ -1,6 +1,6 @@
 import User from "../model/User.js";
 
-export const getById = async (req, res) => {
+export const getUser = async (req, res) => {
     const userId = req.id;
 
     let user;

@@ -22,11 +22,15 @@ export const login = async (req, res, next) => {
         return res.status(401).json({ message: "invalid credentials." });
     }
 
+    if (req.cookies.access_token) {
+        req.cookies.access_token = "";
+    }
+
     const token = generateToken(user._id);
 
     res.cookie("access_token", token, {
         path: "/",
-        expires: new Date(Date.now() + 1000 * 60 * 24 * 3), // miliseconds, minute, hours, days (3 days total)
+        expires: new Date(Date.now() + 1000 * 60 * process.env.TOKEN_TIMEOUT), // miliseconds, minute, hours, days (3 days total)
         httpOnly: true,
         sameSite: "lax",
     })

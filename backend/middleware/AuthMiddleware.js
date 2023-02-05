@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { generateToken } from "../utils/generateToken.js";
 
 export const verifyToken = async (req, res, next) => {
     /* ALTERNATE OPTION USING REGULAR JWT TOKENS */
@@ -43,8 +44,9 @@ export const verifyToken = async (req, res, next) => {
         // decode and verify jwt token
         jwt.verify(String(token), process.env.SECRET, (err, user) => {
             if (err) {
-                return res.status(400).json({ error: "Invalid token.", description: err.message });
+                return res.status(403).json({ error: "Invalid token.", description: err.message });
             }
+
             req.id = user.id;
         });
 
@@ -56,4 +58,33 @@ export const verifyToken = async (req, res, next) => {
         });
         throw new Error("Not Authorized. Authentication failed.");
     }
+};
+
+export const refreshToken = async (req, res, next) => {
+    const oldToken = req.cookies.access_token;
+
+    if (!oldToken) {
+        return res.status(400).json({ error: "No token found." });
+    }
+
+    jwt.verify(String(oldToken), process.env.SECRET, (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(403).json({ message: "Authentication failed" });
+        }
+        res.clearCookie("access_token");
+        req.cookies["access_token"];
+
+        const token = generateToken(data.id);
+
+        res.cookie("access_token", token, {
+            path: "/",
+            expires: new Date(Date.now() + 1000 * 60 * process.env.TOKEN_TIMEOUT), // miliseconds, minute, hours, days (3 days total)
+            httpOnly: true,
+            sameSite: "lax",
+        });
+
+        req.id = data.id;
+        next();
+    });
 };
